@@ -4,6 +4,10 @@
 const express = require('express');
 const app = express();
 const port =8000;
+const expressLayouts = require('express-ejs-layouts');
+app.use(expressLayouts);
+app.use(express.static('./assets'));
+
 // importing main file of routing module(index.js)
 // Basically this is a routes file whenever any request comes express refer to routes file and there would be full filled client task
 app.use('/', require('./routes'));
