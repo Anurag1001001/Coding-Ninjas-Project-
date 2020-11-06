@@ -1,9 +1,5 @@
-module.exports.home = function(req, res){
+module.exports.home = function(req,res){
     res.render('home',{
-        title:"Home"
+        title: 'home'
     });
-}
-
-module.exports.app = function(req,res){
-    return res.send("Hey I'm Anurag Tripathi");
-}
+};
