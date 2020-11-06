@@ -29,6 +29,8 @@ module.exports.signup = function(req , res){
     });
 }
 
+
+
 // get the sign up data
 module.exports.create =function(req, res){
     if(req.body.password != req.body.confirm_password){
@@ -47,7 +49,9 @@ module.exports.create =function(req, res){
         }
     });     
     }
-// create a sign-in session for the user
+
+
+    // create a sign-in session for the user
 module.exports.createSession = function(req, res){
     // steps to authenticate
     // find the user
