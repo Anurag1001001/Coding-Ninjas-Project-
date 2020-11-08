@@ -14,6 +14,9 @@ const db = require('./config/mongoose.js');
 const session = require('express-session');
 const passport = require('passport');
 const passportLocal = require('./config/passport-local-strategy');
+// before writing this step i installed (connect-mongo) library to deal with session logout problem(whenever i restart the server i immediately signout from the welcome page it happened because it need memory to store session now mongo-store solves this problem)
+// mongo store is used to store session cookie in the db 
+const MongoStore = require('connect-mongo')(session);
 
 
 // use to read post request
@@ -46,11 +49,23 @@ app.use(session({
     resave: false,
     cookie:{
         maxAge:(1000*60*100)
-    }
+    },
+    store: new MongoStore(
+        {
+            mongooseConnection: db,
+            autoRemove: 'disabled'
+        },
+        function(err){
+            console.log(err || 'connect-mongo set up Ok');
+        }
+    )
 }));
 
 app.use(passport.initialize());
 app.use(passport.session());
+
+// using a middleware(middleware defined in passport-local-strategy) so that we can setup the user in locals
+app.use(passport.setAuthenticatedUser);
 
 // importing main file of routing module(index.js)
 // Basically this is a routes file whenever any request comes express refer to routes file and there would be full filled client task
@@ -62,7 +77,4 @@ app.listen(port, function(err){
         console.log(`Error in setting up a server: ${err}`);
     }
     console.log(`Successfully set up the express server:${port}`);
-})
-
-
-
+});

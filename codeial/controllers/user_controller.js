@@ -47,6 +47,12 @@ module.exports.createSession = function(req, res){
     return res.redirect('/user/welcome');
 }
 
+// logout function
+module.exports.destroySession = function(req, res){
+    req.logout();
+    return res.redirect('/');
+}
+
 
 module.exports.welcome = function(req,res){
     return res.render('welcome',{
