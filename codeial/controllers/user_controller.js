@@ -1,15 +1,26 @@
 const User = require('../models/user');
+const passport = require('../config/passport-local-strategy');
 // sakshi.singh@jabraconnect.com
 module.exports.signin = function(req, res){
-    res.render('signin',{
-        title:"signin"
-    });
+    if (req.isAuthenticated()){
+        return res.redirect('/user/welcome');
+    }
+    else{
+        res.render('signin',{
+            title:"signin"
+        });
+}
 };
 
 module.exports.signup = function(req , res){
-    res.render('signup',{
-        title:"signup"
-    });
+    if (req.isAuthenticated()){
+        return res.redirect('/user/welcome');
+    }
+    else{
+        res.render('signup',{
+            title:"signup"
+        });
+    }
 }
 
 // get the sign up data
@@ -33,11 +44,12 @@ module.exports.create =function(req, res){
     }
 // create a sign-in session for the user
 module.exports.createSession = function(req, res){
-    //to do
+    return res.redirect('/user/welcome');
 }
 
 
-
-module.exports.app = function(req,res){
-    return res.send("Hey I'm Anurag Tripathi");
+module.exports.welcome = function(req,res){
+    return res.render('welcome',{
+        title:'welcome page'
+    });
 }
