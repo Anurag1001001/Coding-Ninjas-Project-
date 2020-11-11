@@ -10,7 +10,7 @@ const postSchema = new mongoose.Schema({
     user: {
         type: mongoose.Schema.Types.ObjectId,
         //  refering to user schema database
-        ref: 'user'
+        ref: 'User'
     }
 },
 {
