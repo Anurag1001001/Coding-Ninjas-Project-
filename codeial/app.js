@@ -1,3 +1,6 @@
+//  C drive: 56.4GB
+
+
 // Here I'm writing a steps that we need to do for every project
 //step 1: install express server(npm install express) then import it in index.js file 
 
@@ -14,6 +17,8 @@ const db = require('./config/mongoose.js');
 const session = require('express-session');
 const passport = require('passport');
 const passportLocal = require('./config/passport-local-strategy');
+
+
 // before writing this step i installed (connect-mongo) library to deal with session logout problem(whenever i restart the server i immediately signout from the welcome page it happened because it need memory to store session now mongo-store solves this problem)
 // mongo store is used to store session cookie in the db 
 const MongoStore = require('connect-mongo')(session);
@@ -50,6 +55,7 @@ app.use(session({
     cookie:{
         maxAge:(1000*60*100)
     },
+    // this line of code is used to store session cookie into the database so that user don't get logged out if it refresh the page(restart the server).
     store: new MongoStore(
         {
             mongooseConnection: db,
