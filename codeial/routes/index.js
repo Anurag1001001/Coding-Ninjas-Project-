@@ -11,6 +11,7 @@ router.use('/user', require('./user_profile'));
 
 // user post
 router.use('/posts', require('./user_post'));
+router.use('/comments', require('./comments'));
 
 
 // if we don't export this router this will not be publically available to all and whenever request comes to this routes app.js file  will not be able to use this file 

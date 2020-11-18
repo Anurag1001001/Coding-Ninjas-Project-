@@ -18,7 +18,14 @@ const postSchema = new mongoose.Schema({
         //  refering to User schema database
         // this is important step here we're establishing relationship b/w two different schemas(like one-to-one, one-to-many, many-to one kind of relationship).
         ref: 'User'
-    }
+    },
+    // include the array of ids of all comments in this post schema itself
+    comments: [
+        {
+            type:mongoose.Schema.Types.ObjectId,
+            ref: 'Comment'
+        }
+    ]
 },
 {
     timestamps: true
