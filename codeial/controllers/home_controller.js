@@ -19,7 +19,15 @@ module.exports.home = function(req,res){
     //  A litle change in the above function just uncomment it and compare both, What i'm doing here is populating the "user" into posts variable and then in home.ejs we'll print to the screen which post is posted by whom user. What is '"user"'(passed in populate function ), this is the same user which store user_id in postSchema(there is a field of user) and now with the help of user id we're fetching user's all details and populate it into posts variable.
     // populate() lets us reference documents in other collections.
     // Population is the process of automatically replacing the specified paths in the document with document(s) from other collection(s). We may populate a single document, multiple documents, a plain object, multiple plain objects, or all objects returned from a query.
-    Post.find({}).populate('user').exec(function(err, posts){         
+    Post.find({})
+    .populate('user')
+    .populate({
+        path: 'comments',
+        populate: {
+            path: 'user'
+        }
+    })
+    .exec(function(err, posts){         
         return res.render('home',{
             title: 'Codial | home',
             posts: posts
