@@ -22,6 +22,7 @@ module.exports.home = function(req,res){
     Post.find({})
     .populate('user')
     .populate({
+        // here we're passing the comments and user FIELD jo ki post.js(models) Schema me defined hai
         path: 'comments',
         populate: {
             path: 'user'

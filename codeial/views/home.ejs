@@ -16,6 +16,15 @@
             <%for(post of posts){%>
                 <li>
                     <p>
+                        <% if(locals.user && locals.user.id == post.user.id) {%>
+                            <small>
+                                <!-- <%# this is a comment post.id , post is the iterator  %> -->
+                                
+                                <a href="/posts/destroy/<%=post.id%>">X</a>
+                            
+                            </small>
+                        <%}%>
+
                         <%= post.content%>
                         <%= post.user.name%>
                     </p>
