@@ -63,3 +63,16 @@ module.exports.profile = function(req,res){
     });
     
 }
+
+// updating the name and email of sign in user
+module.exports.update = function(req, res){
+    //  giving condition so that no one can fiddle with my system only logged in user can update their information
+    if(req.user.id == req.params.id){
+        User.findByIdAndUpdate(req.params.id , req.body, function(err, user){
+            return res.redirect('back');
+        })
+    }
+    else{
+        return res.status(401).send('Unauthorized');
+    }
+}
