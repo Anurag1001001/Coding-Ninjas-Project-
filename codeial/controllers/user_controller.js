@@ -54,8 +54,12 @@ module.exports.destroySession = function(req, res){
 }
 
 
-module.exports.welcome = function(req,res){
-    return res.render('welcome',{
-        title:'welcome page'
+module.exports.profile = function(req,res){
+    User.findById(req.params.id, function(err, user){
+        return res.render('user_profile',{
+            title:'User Profile',
+            profile_user: user
+        });
     });
+    
 }

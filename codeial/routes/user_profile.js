@@ -5,7 +5,7 @@ const userController = require('../controllers/user_controller');
 
 router.get('/signup', userController.signup);
 router.get('/signin', userController.signin);
-router.get('/welcome',passport.checkAuthentication, userController.welcome);
+router.get('/profile/:id',passport.checkAuthentication, userController.profile);
 
 // if we don't export this router this will not be publically available to all and whenever request comes to this routes index.js file of routes will not be able to use this file 
 
