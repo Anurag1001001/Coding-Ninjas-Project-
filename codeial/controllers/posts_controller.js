@@ -10,10 +10,11 @@ module.exports.create = async function(req, res){
             //  we only want user id not all user details that's why user._id kra hai
             user: req.user._id
         });
+        req.flash('success', 'post created successfully');
         return res.redirect('back');
     }
     catch(err){
-        console.log('Error', err);
+        req.flash('error', err);
         return
     }
 }
@@ -38,15 +39,20 @@ module.exports.destroy = async function(req,res){
         
         //  deleteMany will delete may comment where post == req.params.id(agr post id match krti h to saare comment delete kr dega)
         await Comment.deleteMany({post:req.params.id});
+
+        // displaying flash message
+        req.flash('success', 'post deleted successfully');
         return res.redirect('back');
 
     }
     else{
+        req.flash('error', "You can't delete this post");
         return res.redirect('back');
     }}
     catch(err){
+        req.flash('error', err);
         console.log('ERROR: ', err);
-        return
+        return res.redirect('back');
     }
     
 }

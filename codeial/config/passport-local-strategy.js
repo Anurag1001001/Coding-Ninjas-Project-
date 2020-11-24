@@ -10,17 +10,19 @@ const LocalStrategy = require('passport-local').Strategy;
 // authentication using passsport
 passport.use(new LocalStrategy({
     // this is what we are going to keep unique(email) in schema 
-    usernameField: 'email'
+    usernameField: 'email',
+    passReqToCallback: true
 },
     // Callback function this function takes 3 parameter
-    function(email,password, done){
+    function(req,email,password, done){
         // find the user and establish the identity
         //  here what we are doing is we are find the user whose email and password in mentioned as a parameter
 
         // don't get confused email: email, the key email is the property we are looking at and the value email is the email that we're getting from the above function
         User.findOne({email:email}, function(err, user){
             if (err){
-                console.log('Error in finding user ----> passport');
+                // showing a flash message
+                req.flash('error', err);
                 //  done takes two argument  the first one is error and the 2nd one is : check on google.
                 //  we can go with passing one argument and javascript don't throw any error
                 return done(err);
@@ -28,7 +30,9 @@ passport.use(new LocalStrategy({
             
             // If the user not found or password doesn't match then run this if statement
             if (!user || user.password != password){
-                console.log('Invalid Username/ Password');
+                // displaying flash message
+                req.flash('error',' Invalid Username/ Password');
+
                 // 2nd argument of done is false means that authentication has not been done so authentication is false
                 return done(null, false);
             }

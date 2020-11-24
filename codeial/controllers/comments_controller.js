@@ -19,6 +19,9 @@ module.exports.create = function(req,res){
                 post.comments.push(comment);
                 // whenever we update somthing in a database then we need to save that changes 
                 post.save();
+                
+                // displaying flash message
+                req.flash('success', 'Comment Added');
 
                 res.redirect('back');
             });
@@ -37,12 +40,17 @@ module.exports.destroy = async function(req, res){
             //  What we are actually doing here is just updating post schemas by deleting the comment id from the array of comments of post schema(you can say particular document).
             //we're passing postId  and a query in which we are pulling(pull mongodb ka term h) if comments == req.params.id ho jata hai toh wo saare comment id ko hta dega  
             let post = await Post.findByIdAndUpdate(postId, { $pull: {comments: req.params.id}});
+            
+            // adding flash message
+            req.flash('success', 'Comment deleted successfully');
             return res.redirect('back');
         }
         else{
+            req.flash('error', "you can't delete this post");
             return res.redirect('back');
         }
     }catch(err){
+        req.flash('error', err);
         console.log('Error:', err);
         return
     }
