@@ -44,12 +44,14 @@ module.exports.create = function(req, res){
     }
 // create a sign-in session for the user
 module.exports.createSession = function(req, res){
+    req.flash('success', 'logged in successfully');
     return res.redirect('/');
 }
 
 // logout function
 module.exports.destroySession = function(req, res){
     req.logout();
+    req.flash('success', 'logged out successfully');
     return res.redirect('/');
 }
 

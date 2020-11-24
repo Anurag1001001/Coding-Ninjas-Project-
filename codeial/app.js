@@ -1,6 +1,5 @@
 //  C drive: 56.4GB
 
-
 // Here I'm writing a steps that we need to do for every project
 //step 1: install express server(npm install express) then import it in index.js file 
 
@@ -25,6 +24,11 @@ const MongoStore = require('connect-mongo')(session);
 
 // setting up sass middleware
 const sassMiddleware = require('node-sass-middleware');
+
+// importing to fash message to the screen
+const flash = require('connect-flash');
+// to use custom middleware we must first require that middleware wherever we would be using
+const customMware = require('./config/middleware');
 
 
 app.use(sassMiddleware({
@@ -85,6 +89,11 @@ app.use(passport.session());
 
 // using a middleware(middleware defined in passport-local-strategy) so that we can setup the user in locals
 app.use(passport.setAuthenticatedUser);
+
+// always use(write) this after session because flash uses session cookies
+app.use(flash());
+// i have required this middleware upward here now going to use here
+app.use(customMware.setFlash);
 
 // importing main file of routing module(index.js)
 // Basically this is a routes file whenever any request comes express refer to routes file and there would be full filled client task
