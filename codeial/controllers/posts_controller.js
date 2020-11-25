@@ -3,13 +3,23 @@ const Comment = require('../models/comment');
 
 module.exports.create = async function(req, res){
     try{
-        await Post.create({
+        let post = await Post.create({
             content: req.body.content,
             // How we're fetching user._id because it's not getting from the home.ejs form only getting content so where did we're getting user._id ?
             // Ans: remember we called a setAuthenticated functon from app.js and this function is defined in config->passport 
             //  we only want user id not all user details that's why user._id kra hai
             user: req.user._id
         });
+
+        // checking here AJAX request
+        if (req.xhr){
+            return res.status(200).json({
+                data: {
+                    post: post
+                },
+                message: 'Post created !'
+            });
+        }
         req.flash('success', 'post created successfully');
         return res.redirect('back');
     }
