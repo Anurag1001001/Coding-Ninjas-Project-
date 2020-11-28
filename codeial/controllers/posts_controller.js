@@ -11,8 +11,21 @@ module.exports.create = async function(req, res){
             user: req.user._id
         });
 
+        // console.log(Post.find({}, function(err, post){
+        //     console.log(post);
+        // }));
+
+
+
         // checking here AJAX request
         if (req.xhr){
+            // post =  await Post.find({_id: post._id}).populate('user');
+
+            // use execPopulate() otherwise user will not populate to post 
+            // Call the `populate()` method on a document to populate a path.
+            // Need to call `execPopulate()` to actually execute the `populate()`.
+            post =  await post.populate('user', 'name').execPopulate();
+
             return res.status(200).json({
                 data: {
                     post: post
@@ -25,7 +38,7 @@ module.exports.create = async function(req, res){
     }
     catch(err){
         req.flash('error', err);
-        return
+        return res.redirect('back');
     }
 }
     
@@ -49,6 +62,16 @@ module.exports.destroy = async function(req,res){
         
         //  deleteMany will delete may comment where post == req.params.id(agr post id match krti h to saare comment delete kr dega)
         await Comment.deleteMany({post:req.params.id});
+
+        if(req.xhr){
+            return res.status(200).json({
+                data:{
+                    post_id: req.params.id
+                },
+                message: "post deleted"
+            });
+        }
+        
 
         // displaying flash message
         req.flash('success', 'post deleted successfully');

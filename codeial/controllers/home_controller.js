@@ -22,20 +22,21 @@ module.exports.home = async function(req,res){
     // Population is the process of automatically replacing the specified paths in the document with document(s) from other collection(s). We may populate a single document, multiple documents, a plain object, multiple plain objects, or all objects returned from a query.
     try{
         let posts = await Post.find({})
-    .populate('user')
-    .populate({
-        // here we're passing the comments and user FIELD jo ki post.js(models) Schema me defined hai
-        path: 'comments',
-        populate: {
-            path: 'user'
-        }
-    });
-    let users = await User.find({}) ;
-    return res.render('home',{
-        title: 'Codial | home',
-        posts: posts,
-        all_users:users
-    });
+        .sort('-createdAt')
+        .populate('user')
+        .populate({
+            // here we're passing the comments and user FIELD jo ki post.js(models) Schema me defined hai
+            path: 'comments',
+            populate: {
+                path: 'user'
+            }
+        });
+        let users = await User.find({}) ;
+        return res.render('home',{
+            title: 'Codial | home',
+            posts: posts,
+            all_users:users
+        });
     }catch(err){
         console.log('Error:', err);
         return
