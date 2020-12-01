@@ -10,12 +10,10 @@ module.exports.create = async function(req, res){
             //  we only want user id not all user details that's why user._id kra hai
             user: req.user._id
         });
-
         // console.log(Post.find({}, function(err, post){
         //     console.log(post);
         // }));
-
-
+        
 
         // checking here AJAX request
         if (req.xhr){
@@ -33,7 +31,7 @@ module.exports.create = async function(req, res){
                 message: 'Post created !'
             });
         }
-        req.flash('success', 'post created successfully');
+        // req.flash('success', 'post created successfully');
         return res.redirect('back');
     }
     catch(err){
@@ -74,7 +72,7 @@ module.exports.destroy = async function(req,res){
         
 
         // displaying flash message
-        req.flash('success', 'post deleted successfully');
+        // req.flash('success', 'post deleted successfully');
         return res.redirect('back');
 
     }

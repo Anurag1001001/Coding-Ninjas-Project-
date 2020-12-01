@@ -1,5 +1,9 @@
 const User = require('../models/user');
 const passport = require('../config/passport-local-strategy');
+
+const fs = require('fs');
+const path = require('path');
+
 // sakshi.singh@jabraconnect.com
 module.exports.signin = function(req, res){
     if (req.isAuthenticated()){
@@ -67,14 +71,55 @@ module.exports.profile = function(req,res){
 }
 
 // updating the name and email of sign in user
-module.exports.update = function(req, res){
+module.exports.update =  async function(req, res){
     //  giving condition so that no one can fiddle with my system only logged in user can update their information
+    
+    // Now i'm going to use asyn and await that's y i commenting
+
+    // if(req.user.id == req.params.id){
+    //     User.findByIdAndUpdate(req.params.id , req.body, function(err, user){
+    //         return res.redirect('back');
+    //     })
+    // }
+    // else{
+    //     return res.status(401).send('Unauthorized');
+    // }
+
     if(req.user.id == req.params.id){
-        User.findByIdAndUpdate(req.params.id , req.body, function(err, user){
+        try{
+            let user = await User.findById(req.params.id);
+            // Now there is a slight change i won't able to access form field by req.params.id anymore bcoz i've mentioned "enctype = multipart " in the form field in user_profile.ejs  our parser won't be able to parse it to overcome with this we've defined uploadedAvatar static function in user.js 
+
+            User.uploadedAvatar(req, res,  function(err){
+                if(err){
+                    console.log(`*****Multer error: ${err}`);
+                }
+                user.name = req.body.name;
+                user.email = req.body.email;
+
+                if(req.file){
+                    if(user.avatar){
+                        // we'll delete the previous avatar file whenever user uploads new one
+                        //  unlinkSync() is a method in fs to delete 
+                        fs.unlinkSync(path.join(__dirname, '..', user.avatar));
+                    }
+
+
+
+                    // this is saving the path of the uploaded file into the avatar field  in the user 
+                    user.avatar = User.avatarPath + '/' + req.file.filename;
+                }
+                user.save();
+                return res.redirect('back');                
+            })
+        }catch(err){
+            req.flash('error', err)
             return res.redirect('back');
-        })
+        }
     }
     else{
-        return res.status(401).send('Unauthorized');
+        req.flash('error', 'Unauthorised');
+        return res.status(401).send('Unauthorised');
     }
+
 }

@@ -10,13 +10,22 @@
                 url: '/posts/create',
                 data: newPostForm.serialize(),
                 success: function(data){
-                    console.log(data);
+                    // console.log(data);
                     let newPost = newPostDom(data.data.post);
                     $('#posts-list-container > ul').prepend(newPost);
-
+                    
 
                     // unclear (' .delete-post-button', newPost)
                     deletePost($(' .delete-post-button', newPost));
+                    // req.flash('success', 'post created successfully');
+                    new Noty({
+                        theme: 'relax',
+                        text: "Post published!",
+                        type: 'success',
+                        layout: 'topRight',
+                        timeout: 1500
+                        
+                    }).show();
                     
                 },
                 error: function(error){
@@ -35,9 +44,7 @@
                 </small>
             ${post.content}
             <br>
-            <small>
             ${post.user.name}
-            </small>
         </p>
         <div class="post-comments">
           
@@ -61,10 +68,10 @@
                 //  $(deleteLink).prop('href') this way we get url inside of href(jquery way)
                 url: $(deleteLink).prop('href'),
                 success: function(data){
+                    // req.flash('success', 'post deleted successfully');
                     // console.log(data.data);
 
                     // post._id honi thi but ye post_id se work ho rha h
-                    
                     $(`#post-${data.data.post_id}`).remove();
                 },
                 error: function(error){
