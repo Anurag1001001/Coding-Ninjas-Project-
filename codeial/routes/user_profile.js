@@ -23,4 +23,12 @@ router.post('/create-session', passport.authenticate(
 // signout routes and functionality
 router.get('/signout', userController.destroySession);
 
+// routes for google startegy
+// dono routes(callback wala bhi) bydefault routes h google ki ore se
+router.get('/auth/google', passport.authenticate('google', {scope: ['profile', 'email']}));
+// callback Url
+router.get('/auth/google/callback', passport.authenticate('google', {failureRedirect: 'users/signin'}), userController.createSession);
+
+
+
 module.exports = router ;
