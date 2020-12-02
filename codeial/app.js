@@ -16,6 +16,8 @@ const db = require('./config/mongoose.js');
 const session = require('express-session');
 const passport = require('passport');
 const passportLocal = require('./config/passport-local-strategy');
+const passportJWT = require('./config/passport-jwt-strategy');
+
 
 
 // before writing this step i installed (connect-mongo) library to deal with session logout problem(whenever i restart the server i immediately signout from the welcome page it happened because it need memory to store session now mongo-store solves this problem)
