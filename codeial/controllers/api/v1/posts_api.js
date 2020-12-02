@@ -34,7 +34,7 @@ module.exports.destroy = async function(req,res){
     // ideally humme req.user._id krna tha nut humne req.user.id kra kyuki humme ObjectId ko string me convert krna h and if hum id use krenge toh javascript apne aap ObjectId ko string format me convert kr dega.
     // .id means converting the object id into string.
 
-    // if(post.user == req.user.id){
+    if(post.user == req.user.id){
         // remove will delete that particular document(post and associated details)
         post.remove();
         
@@ -49,11 +49,12 @@ module.exports.destroy = async function(req,res){
             message: "Post and associated deleted successfully!"
         });
 
-    // }
-    // else{
-    //     req.flash('error', "You can't delete this post");
-    //     return res.redirect('back');
-    // }
+    }
+    else{
+        return res.json(401,{
+            message: "you can not delete this post"
+        });
+    }
 }
     catch(err){
         return res.json(500,{
